@@ -3,6 +3,7 @@
 namespace SergiuParaschiv\Raven\Document;
 
 use SergiuParaschiv\Raven\DocumentCommand\Load;
+use SergiuParaschiv\Raven\DocumentCommand\LoadMany;
 use SergiuParaschiv\Raven\DocumentCommand\Store;
 use SergiuParaschiv\Raven\DocumentCommand\Delete;
 
@@ -22,6 +23,13 @@ class DocumentSessionCommands {
         $command = new Load($this->curl);
         
         return $command->execute($id, $className, $includes);
+    }
+    
+    public function loadMany($ids, $className, $includes)
+    {
+        $command = new LoadMany($this->curl);
+        
+        return $command->execute($ids, $className, $includes);
     }
 
     public function store($entity)

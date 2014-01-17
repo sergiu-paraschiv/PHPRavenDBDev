@@ -1,6 +1,7 @@
 <?php
 
 use SergiuParaschiv\Raven\Models\Foo;
+use SergiuParaschiv\Raven\Models\Baz;
 
 use SergiuParaschiv\Raven\Document\DocumentSession;
 
@@ -68,5 +69,18 @@ class DocumentSessionTests extends PHPUnit_Framework_TestCase
         $foo = $session->load($foo);
         
         $this->assertEquals('Bar2', $foo->Bar);
+    }
+    
+    public function testLoadInclude()
+    {
+        $session = new DocumentSession($this->dbURL);
+        
+        $baz = $session
+                ->including([
+                    'Foo' => 'SergiuParaschiv\Raven\Models\Foo'
+                ])
+                ->load('bazs/special1', 'SergiuParaschiv\Raven\Models\Baz');
+        
+        $this->assertEquals('BarSpecial', $baz->Foo->Bar);
     }
 }

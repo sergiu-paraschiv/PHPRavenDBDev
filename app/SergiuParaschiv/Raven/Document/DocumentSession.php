@@ -7,13 +7,14 @@ use \InvalidArgumentException;
 use SergiuParaschiv\Raven\Util\Curl\Curl;
 use SergiuParaschiv\Raven\Util\Queue;
 use SergiuParaschiv\Raven\DocumentCommand\Batch;
-use SergiuParaschiv\Raven\DocumentCommand\Query;
+use SergiuParaschiv\Raven\DocumentCommand\Query\Query;
 
 class DocumentSession {
     private $curl;
     private $idGenerator;
     private $commands;
     private $queue;
+    private $includes;
     
     public function __construct($url)
     {
@@ -21,6 +22,7 @@ class DocumentSession {
         $this->idGenerator = new HiLoKeyGenerator($this->curl);
         $this->commands = new DocumentSessionCommands($this->curl, $this->idGenerator);
         $this->queue = new Queue();
+        $this->includes = [];
     }
     
     public function store($entity)
@@ -45,11 +47,23 @@ class DocumentSession {
         $this->queue->push($item);
     }
     
+    public function including($includes)
+    {
+        $this->includes = $includes;
+        
+        return $this;
+    }
+    
     public function load($id, $className = null)
     {
+        if(is_array($id))
+        {
+            return $this->commands->loadMany($id, $className, $this->includes);
+        }
+        
         if(is_object($id))
         {
-            return $this->commands->load($id->Id, get_class($id));
+            return $this->commands->load($id->Id, get_class($id), $this->includes);
         }
         
         if(is_null($className))
@@ -57,7 +71,7 @@ class DocumentSession {
             throw new InvalidArgumentException('You must specify a class name.');
         }
         
-        return $this->commands->load($id, $className);
+        return $this->commands->load($id, $className, $this->includes);
     }
     
     public function query($index)

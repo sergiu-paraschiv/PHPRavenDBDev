@@ -5,6 +5,14 @@ namespace SergiuParaschiv\Raven\Util;
 use \ReflectionClass;
 
 class EntityName {
+
+    public static function asIs($entity)
+    {
+        $reflector = new ReflectionClass($entity);
+
+        return Inflector::classify($reflector->getShortName());
+    }
+    
     public static function plural($entity)
     {
         $reflector = new ReflectionClass($entity);

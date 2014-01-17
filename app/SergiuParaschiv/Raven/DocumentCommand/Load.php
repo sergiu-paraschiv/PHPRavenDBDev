@@ -34,9 +34,9 @@ class Load {
     
     private function processIncludes($entity, $includes)
     {
-        foreach($includes as $include)
+        foreach($includes as $key => $className)
         {
-            $entity->{$include['key']} = $this->execute($entity->{$include['key']}, $include['className'], $include['includes']);
+            $entity->{$key} = $this->execute($entity->{$key}, $className);
         }
         
         return $entity;

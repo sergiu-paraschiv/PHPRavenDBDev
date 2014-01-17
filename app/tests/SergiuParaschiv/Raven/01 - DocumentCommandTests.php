@@ -79,7 +79,7 @@ class DocumentCommandTests extends PHPUnit_Framework_TestCase
         $baz2 = $command3->execute('bazs/special1', 
             'SergiuParaschiv\Raven\Models\Baz',
             [
-                ['key' => 'Foo', 'className' => 'SergiuParaschiv\Raven\Models\Foo', 'includes' => []]
+                'Foo' => 'SergiuParaschiv\Raven\Models\Foo'
             ]
         );
         
