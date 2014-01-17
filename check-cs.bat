@@ -1,0 +1,1 @@
+./vendor/bin/phpcs --standard=phpcs-rules.xml app/SergiuParaschiv
