@@ -1,1 +1,0 @@
-./vendor/bin/phpmd app/SergiuParaschiv text phpmd-rules.xml
